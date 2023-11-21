@@ -14,3 +14,7 @@ std::string ErrorException::getMessage() const {
 void error(std::string message) {
     throw ErrorException(message);
 }
+
+void syntaxError() {
+    error("SYNTAX ERROR");
+}

@@ -7,6 +7,7 @@
 #include <cctype>
 #include <iostream>
 #include <string>
+#include <regex>
 #include "exp.hpp"
 #include "parser.hpp"
 #include "program.hpp"
@@ -14,29 +15,24 @@
 #include "Utils/tokenScanner.hpp"
 #include "Utils/strlib.hpp"
 
-
 /* Function prototypes */
 
-void processLine(std::string line, Program &program, EvalState &state);
+void processLine(const std::string &line, Program &program, EvalState &state);
 
 /* Main program */
 
 int main() {
-    EvalState state;
-    Program program;
-    //cout << "Stub implementation of BASIC" << endl;
-    while (true) {
-        try {
-            std::string input;
-            getline(std::cin, input);
-            if (input.empty())
-                return 0;
-            processLine(input, program, state);
-        } catch (ErrorException &ex) {
-            std::cout << ex.getMessage() << std::endl;
-        }
+  EvalState state;
+  Program program;
+  while (true) {
+    try {
+      std::string input;
+      getline(std::cin, input);
+      processLine(input, program, state);
+    } catch (ErrorException &ex) {
+      std::cout << ex.getMessage() << std::endl;
     }
-    return 0;
+  }
 }
 
 /*
@@ -51,12 +47,22 @@ int main() {
  * or one of the BASIC commands, such as LIST or RUN.
  */
 
-void processLine(std::string line, Program &program, EvalState &state) {
-    TokenScanner scanner;
-    scanner.ignoreWhitespace();
-    scanner.scanNumbers();
-    scanner.setInput(line);
-
-    //todo
+void processLine(const std::string &line, Program &program, EvalState &state) {
+  static std::regex inputPattern("^(?:([0-9]+)\\s*)?([A-Z]+)?(.*)$");
+  std::smatch matches;
+  std::regex_match(line, matches, inputPattern);
+  int lineNumber = matches[1].matched ? std::stoi(matches[1].str()) : -1;
+  std::string command = matches[2];
+  std::string info = matches[3];
+  if (command.empty()) {
+    if (lineNumber >= 0 && info.empty()) {
+      program.removeSourceLine(lineNumber);
+    } else {
+      syntaxError();
+    }
+  } else {
+    Statement::statementMap[command]->execute(lineNumber, info, state, program);
+    program.addSourceLine(lineNumber, line);
+  }
 }
 

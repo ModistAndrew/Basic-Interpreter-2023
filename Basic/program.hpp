@@ -31,6 +31,7 @@ class Statement;
  */
 
 class Program {
+  std::unordered_map<int, std::string> sourceLines;
 
 public:
 
@@ -106,7 +107,7 @@ public:
  * exists, the memory for that statement is reclaimed.
  */
 
-    void setParsedStatement(int lineNumber, Statement *stmt);
+    void setParsedStatement(int lineNumber, const Statement &stmt);
 
 /*
  * Method: getParsedStatement

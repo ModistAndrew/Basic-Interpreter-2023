@@ -10,8 +10,6 @@
 
 #include "program.hpp"
 
-
-
 Program::Program() = default;
 
 Program::~Program() = default;
@@ -36,12 +34,10 @@ std::string Program::getSourceLine(int lineNumber) {
     //todo
 }
 
-void Program::setParsedStatement(int lineNumber, Statement *stmt) {
+void Program::setParsedStatement(int lineNumber, const Statement &stmt) {
     // Replace this stub with your own code
     //todo
 }
-
-//void Program::removeSourceLine(int lineNumber) {
 
 Statement *Program::getParsedStatement(int lineNumber) {
    // Replace this stub with your own code

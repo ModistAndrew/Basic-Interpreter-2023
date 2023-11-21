@@ -37,4 +37,6 @@ private:
 
 void error(std::string message);
 
+void syntaxError();
+
 #endif //CODE_ERROR_HPP

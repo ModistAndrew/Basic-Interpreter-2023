@@ -21,68 +21,47 @@
 #include"parser.hpp"
 #include "Utils/error.hpp"
 #include "Utils/strlib.hpp"
+#include <regex>
+#include <functional>
 
 class Program;
 
-/*
- * Class: Statement
- * ----------------
- * This class is used to represent a statement in a program.
- * The model for this class is Expression in the exp.h interface.
- * Like Expression, Statement is an abstract class with subclasses
- * for each of the statement and command types required for the
- * BASIC interpreter.
- */
-
 class Statement {
+  friend class StatementType;
 
+  std::string name;
+  std::smatch args;
+
+  Statement(const std::string &name, const std::smatch &args);
 public:
-
-/*
- * Constructor: Statement
- * ----------------------
- * The base class constructor is empty.  Each subclass must provide
- * its own constructor.
- */
-
-    Statement();
-
-/*
- * Destructor: ~Statement
- * Usage: delete stmt;
- * -------------------
- * The destructor deallocates the storage for this expression.
- * It must be declared virtual to ensure that the correct subclass
- * destructor is called when deleting a statement.
- */
-
-    virtual ~Statement();
-
-/*
- * Method: execute
- * Usage: stmt->execute(state);
- * ----------------------------
- * This method executes a BASIC statement.  Each of the subclasses
- * defines its own execute method that implements the necessary
- * operations.  As was true for the expression evaluator, this
- * method takes an EvalState object for looking up variables or
- * controlling the operation of the interpreter.
- */
-
-    virtual void execute(EvalState &state, Program &program) = 0;
-
+  void execute(EvalState &state, Program &program) const;
 };
 
+class StatementType {
+  friend class Statement;
 
-/*
- * The remainder of this file must consists of subclass
- * definitions for the individual statement forms.  Each of
- * those subclasses must define a constructor that parses a
- * statement from a scanner and a method called execute,
- * which executes that statement.  If the private data for
- * a subclass includes data allocated on the heap (such as
- * an Expression object), the class implementation must also
- * specify its own destructor method to free that memory.
- */
+  std::string name;
+  std::regex pattern;
+  int lineFlag; //-1 for no line, 1 for line, 0 for both
+  static void run(const std::smatch &data, EvalState &state, Program &program) {}
+  std::function<decltype(run)> runFunc;
+
+  static std::unordered_map<std::string, StatementType> statementMap;
+  static const std::string VAR;
+  static const std::string EXP;
+  static const std::string SEPARATOR;
+  static const std::string EMPTY;
+  static const std::string ANY;
+  static const std::string EQUAL;
+  static const std::string COMPARATOR;
+
+  StatementType(int lineFlag, const std::string &name, const std::vector<std::string> &patterns,
+                const std::function<decltype(run)> &runFunc);
+
+public:
+  static void init();
+
+  void eval(int lineNumber, const std::string &info, EvalState &state, Program &program) const;
+};
 
 #endif
