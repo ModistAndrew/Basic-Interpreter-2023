@@ -4,7 +4,6 @@
  * Implements the parser.h interface.
  */
 
-#include <memory>
 #include "parser.hpp"
 
 
@@ -17,9 +16,15 @@ int parseExp(const std::string &str, EvalState &state) {
   TokenScanner scanner;
   scanner.ignoreWhitespace();
   scanner.setInput(str);
-  std::unique_ptr<Expression> expression(parseExp(scanner));
-  int ret = expression->eval(state);
-  return ret;
+  Expression *expression = parseExp(scanner);
+  try {
+    int ret = expression->eval(state);
+    delete expression;
+    return ret;
+  } catch (ErrorException &ex) {
+    delete expression;
+    throw;
+  }
 }
 
 Expression *parseExp(TokenScanner &scanner) {
