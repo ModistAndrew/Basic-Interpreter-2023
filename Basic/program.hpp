@@ -36,6 +36,7 @@ class Program {
   int currentLine = -1; //should be -1 when not running, or should be a valid line number
   bool lineModified = false;
   void nextLine();
+  const Statement& at();
 public:
   void run(EvalState &state);
   void setCurrentLine(int line);

@@ -61,7 +61,7 @@ void Program::run(EvalState& state) { //currentLine still would be -1
   currentLine = -1; //may return with error, so we have to reset
   nextLine();
   while(currentLine != -1) {
-    parsedStatements.find(currentLine)->second.execute(state, *this);
+    at().execute(state, *this);
     if(!lineModified) {
       nextLine();
     } else {
@@ -73,4 +73,12 @@ void Program::run(EvalState& state) { //currentLine still would be -1
 void Program::setCurrentLine(int line) {
   currentLine = line;
   lineModified = true;
+}
+
+const Statement &Program::at() {
+  auto it = parsedStatements.find(currentLine);
+  if (it == parsedStatements.end()) {
+    error("LINE NUMBER ERROR");
+  }
+  return it->second;
 }
