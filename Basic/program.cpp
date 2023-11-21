@@ -20,10 +20,12 @@ void Program::clear() {
 }
 
 void Program::addSourceLine(int lineNumber, const std::string &line) {
+  sourceLines.erase(lineNumber); //have to erase first
   sourceLines.insert({lineNumber, line});
 }
 
 void Program::setParsedStatement(int lineNumber, const Statement &stmt) {
+  parsedStatements.erase(lineNumber); //have to erase first
   parsedStatements.insert({lineNumber, stmt});
 }
 
@@ -56,6 +58,7 @@ void Program::nextLine() {
 }
 
 void Program::run(EvalState& state) { //currentLine still would be -1
+  currentLine = -1; //may return with error, so we have to reset
   nextLine();
   while(currentLine != -1) {
     parsedStatements.find(currentLine)->second.execute(state, *this);

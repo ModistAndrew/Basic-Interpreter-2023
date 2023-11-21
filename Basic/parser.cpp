@@ -12,11 +12,14 @@
  * ------------------------------
  * This code just reads an expression and then checks for extra tokens.
  */
-Expression *parseExp(const std::string &str) {
+int parseExp(const std::string &str, EvalState &state) {
   TokenScanner scanner;
   scanner.ignoreWhitespace();
   scanner.setInput(str);
-  return parseExp(scanner);
+  Expression *expression = parseExp(scanner);
+  int ret = expression->eval(state);
+  delete expression;
+  return ret;
 }
 
 Expression *parseExp(TokenScanner &scanner) {

@@ -178,18 +178,18 @@ void showScore() {
 int main(int argc, char **argv) {
     parseArguments(argc, argv);
     try {
-        cout << "Compiling code ..." << endl;
-        /**************************************************************
-         if you modify the structure of the files, you should modify the file paths here.
-         **************************************************************/
-        system("g++ -o testcode Basic/Basic.cpp Basic/evalstate.cpp Basic/exp.cpp Basic/parser.cpp Basic/program.cpp Basic/statement.cpp Basic/Utils/error.cpp Basic/Utils/error.hpp Basic/Utils/tokenScanner.cpp Basic/Utils/tokenScanner.hpp Basic/Utils/strlib.cpp");
+//        cout << "Compiling code ..." << endl;
+//        /**************************************************************
+//         if you modify the structure of the files, you should modify the file paths here.
+//         **************************************************************/
+//        system("g++ -o testcode Basic/Basic.cpp Basic/evalstate.cpp Basic/exp.cpp Basic/parser.cpp Basic/program.cpp Basic/statement.cpp Basic/Utils/error.cpp Basic/Utils/error.hpp Basic/Utils/tokenScanner.cpp Basic/Utils/tokenScanner.hpp Basic/Utils/strlib.cpp");
         if (traceFile.size()) runTest(traceFile);
         else {
             int i = 0;
             for (; i < traceCount; i++) runTest(traceFolder + traces[i]);
         }
     } catch (...) {}
-    system("rm testcode -f");
+//    system("rm testcode -f");
     showScore();
     return 0;
 }

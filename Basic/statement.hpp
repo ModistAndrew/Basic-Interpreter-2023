@@ -30,9 +30,9 @@ class Statement {
   friend class StatementType;
 
   std::string name;
-  std::smatch args;
+  std::vector<std::string> args;
 
-  Statement(const std::string &name, const std::smatch &args);
+  Statement(const std::string &name, const std::smatch &matches);
 
 public:
   void execute(EvalState &state, Program &program) const;
@@ -43,8 +43,11 @@ class StatementType {
 
   std::string name;
   std::regex pattern;
+  static bool passPredicate(const std::string &str);
+  static bool varPredicate(const std::string &str);
+  std::vector<std::function<decltype(passPredicate)>> predicates; //used to check LET
   int lineFlag; //-1 for no line, 1 for line, 0 for both
-  static void run(const std::smatch &data, EvalState &state, Program &program) {}
+  static void run(const std::vector<std::string> &data, EvalState &state, Program &program); //just for decltype
 
   std::function<decltype(run)> runFunc;
 
