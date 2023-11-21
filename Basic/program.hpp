@@ -34,9 +34,11 @@ class Program {
   std::map<int, std::string> sourceLines;
   std::map<int, Statement> parsedStatements;
   int currentLine = -1; //should be -1 when not running, or should be a valid line number
+  bool lineModified = false;
   void nextLine();
 public:
-  void run();
+  void run(EvalState &state);
+  void markModified();
 /*
  * Constructor: Program
  * Usage: Program program;
@@ -63,6 +65,7 @@ public:
  */
 
     void clear();
+    void print();
 
 /*
  * Method: addSourceLine
@@ -79,7 +82,7 @@ public:
 
 /*
  * Method: removeSourceLine
- * Usage: program.removeSourceLine(lineNumber);
+ * Usage: program.remove(lineNumber);
  * --------------------------------------------
  * Removes the line with the specified number from the program,
  * freeing the memory associated with any parsed representation.
@@ -87,17 +90,7 @@ public:
  * performing any action.
  */
 
-    void removeSourceLine(int lineNumber);
-
-/*
- * Method: getSourceLine
- * Usage: string line = program.getSourceLine(lineNumber);
- * -------------------------------------------------------
- * Returns the program line with the specified line number.
- * If no such line exists, this method returns the empty string.
- */
-
-    std::string getSourceLine(int lineNumber);
+    void remove(int lineNumber);
 
 /*
  * Method: setParsedStatement
@@ -108,18 +101,7 @@ public:
  * method raises an error.  If a previous parsed representation
  * exists, the memory for that statement is reclaimed.
  */
-
     void setParsedStatement(int lineNumber, const Statement &stmt);
-
-/*
- * Method: getParsedStatement
- * Usage: Statement *stmt = program.getParsedStatement(lineNumber);
- * ----------------------------------------------------------------
- * Retrieves the parsed representation of the statement at the
- * specified line number.  If no value has been set, this method
- * returns NULL.
- */
-    Statement& getParsedStatement(int lineNumber);
 };
 
 #endif

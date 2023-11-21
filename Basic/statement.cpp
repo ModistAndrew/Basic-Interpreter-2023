@@ -95,6 +95,7 @@ void StatementType::init() {
     }
     state.setValue(data[1], std::stoi(sm[0]));
   }, 1);
+
 }
 
 void StatementType::add(const std::string &name, const std::vector<std::string> &patterns,

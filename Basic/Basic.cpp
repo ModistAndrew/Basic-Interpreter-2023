@@ -56,7 +56,7 @@ void processLine(const std::string &line, Program &program, EvalState &state) {
   std::string info = matches[3]; //may begin with space
   if (command.empty()) {
     if (lineNumber >= 0 && info.empty()) {
-      program.removeSourceLine(lineNumber);
+      program.remove(lineNumber);
     } else {
       syntaxError();
     }

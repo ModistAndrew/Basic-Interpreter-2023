@@ -15,33 +15,27 @@ Program::Program() = default;
 Program::~Program() = default;
 
 void Program::clear() {
-  // Replace this stub with your own code
-  //todo
+  sourceLines.clear();
+  parsedStatements.clear();
 }
 
 void Program::addSourceLine(int lineNumber, const std::string &line) {
-  // Replace this stub with your own code
-  //todo
-}
-
-void Program::removeSourceLine(int lineNumber) {
-  // Replace this stub with your own code
-  //todo
-}
-
-std::string Program::getSourceLine(int lineNumber) {
-  // Replace this stub with your own code
-  //todo
+  sourceLines.insert({lineNumber, line});
 }
 
 void Program::setParsedStatement(int lineNumber, const Statement &stmt) {
-  // Replace this stub with your own code
-  //todo
+  parsedStatements.insert({lineNumber, stmt});
 }
 
-Statement &Program::getParsedStatement(int lineNumber) {
-  // Replace this stub with your own code
-  //todo
+void Program::remove(int lineNumber) {
+  sourceLines.erase(lineNumber);
+  parsedStatements.erase(lineNumber);
+}
+
+void Program::print() {
+  for(auto & sourceLine : sourceLines) {
+    std::cout << sourceLine.second << std::endl;
+  }
 }
 
 void Program::nextLine() {
@@ -61,12 +55,19 @@ void Program::nextLine() {
   currentLine = (it == parsedStatements.end()) ? -1 : it->first;
 }
 
-void Program::run(const EvalState) { //start from begin
-  currentLine = -1;
+void Program::run(EvalState& state) { //currentLine still would be -1
   nextLine();
   while(currentLine != -1) {
     parsedStatements.find(currentLine)->second.execute(state, *this);
-    nextLine();
+    if(!lineModified) {
+      nextLine();
+    } else {
+      lineModified = false; //reset
+    }
   }
+}
+
+void Program::markModified() {
+  lineModified = true;
 }
 
