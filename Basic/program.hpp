@@ -31,10 +31,12 @@ class Statement;
  */
 
 class Program {
-  std::unordered_map<int, std::string> sourceLines;
-
+  std::map<int, std::string> sourceLines;
+  std::map<int, Statement> parsedStatements;
+  int currentLine = -1; //should be -1 when not running, or should be a valid line number
+  void nextLine();
 public:
-
+  void run();
 /*
  * Constructor: Program
  * Usage: Program program;
@@ -117,37 +119,7 @@ public:
  * specified line number.  If no value has been set, this method
  * returns NULL.
  */
-
-    Statement *getParsedStatement(int lineNumber);
-
-/*
- * Method: getFirstLineNumber
- * Usage: int lineNumber = program.getFirstLineNumber();
- * -----------------------------------------------------
- * Returns the line number of the first line in the program.
- * If the program has no lines, this method returns -1.
- */
-
-    int getFirstLineNumber();
-
-/*
- * Method: getNextLineNumber
- * Usage: int nextLine = program.getNextLineNumber(lineNumber);
- * ------------------------------------------------------------
- * Returns the line number of the first line in the program whose
- * number is larger than the specified one, which must already exist
- * in the program.  If no more lines remain, this method returns -1.
- */
-
-    int getNextLineNumber(int lineNumber);
-
-    //more func to add
-    //todo
-
-private:
-
-    // Fill this in with whatever types and instance variables you need
-    //todo
+    Statement& getParsedStatement(int lineNumber);
 };
 
 #endif

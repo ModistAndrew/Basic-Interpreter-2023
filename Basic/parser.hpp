@@ -25,6 +25,8 @@
  * whitespace and to scan numbers.
  */
 
+Expression *parseExp(const std::string &str);
+
 Expression *parseExp(TokenScanner &scanner);
 
 /*

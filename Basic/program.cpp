@@ -15,46 +15,58 @@ Program::Program() = default;
 Program::~Program() = default;
 
 void Program::clear() {
-    // Replace this stub with your own code
-    //todo
+  // Replace this stub with your own code
+  //todo
 }
 
 void Program::addSourceLine(int lineNumber, const std::string &line) {
-    // Replace this stub with your own code
-    //todo
+  // Replace this stub with your own code
+  //todo
 }
 
 void Program::removeSourceLine(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+  // Replace this stub with your own code
+  //todo
 }
 
 std::string Program::getSourceLine(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+  // Replace this stub with your own code
+  //todo
 }
 
 void Program::setParsedStatement(int lineNumber, const Statement &stmt) {
-    // Replace this stub with your own code
-    //todo
+  // Replace this stub with your own code
+  //todo
 }
 
-Statement *Program::getParsedStatement(int lineNumber) {
-   // Replace this stub with your own code
-   //todo
+Statement &Program::getParsedStatement(int lineNumber) {
+  // Replace this stub with your own code
+  //todo
 }
 
-int Program::getFirstLineNumber() {
-    // Replace this stub with your own code
-    //todo
+void Program::nextLine() {
+  if(parsedStatements.empty()) {
+    currentLine = -1;
+    return;
+  }
+  if (currentLine == -1) {
+    currentLine = parsedStatements.begin()->first;
+    return;
+  }
+  auto it = parsedStatements.find(currentLine);
+  if (it == parsedStatements.end()) {
+    error("LINE NUMBER ERROR");
+  }
+  it++;
+  currentLine = (it == parsedStatements.end()) ? -1 : it->first;
 }
 
-int Program::getNextLineNumber(int lineNumber) {
-    // Replace this stub with your own code
-    //todo
+void Program::run(const EvalState) { //start from begin
+  currentLine = -1;
+  nextLine();
+  while(currentLine != -1) {
+    parsedStatements.find(currentLine)->second.execute(state, *this);
+    nextLine();
+  }
 }
-
-//more func to add
-//todo
-
 

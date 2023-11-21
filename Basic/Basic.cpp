@@ -48,12 +48,12 @@ int main() {
  */
 
 void processLine(const std::string &line, Program &program, EvalState &state) {
-  static std::regex inputPattern("^(?:([0-9]+)\\s*)?([A-Z]+)?(.*)$");
+  static std::regex inputPattern("^([0-9]+\\s*)?([A-Z]+)?(.*)$");
   std::smatch matches;
   std::regex_match(line, matches, inputPattern);
   int lineNumber = matches[1].matched ? std::stoi(matches[1].str()) : -1;
   std::string command = matches[2];
-  std::string info = matches[3];
+  std::string info = matches[3]; //may begin with space
   if (command.empty()) {
     if (lineNumber >= 0 && info.empty()) {
       program.removeSourceLine(lineNumber);
@@ -61,8 +61,10 @@ void processLine(const std::string &line, Program &program, EvalState &state) {
       syntaxError();
     }
   } else {
-    Statement::statementMap[command]->execute(lineNumber, info, state, program);
-    program.addSourceLine(lineNumber, line);
+    StatementType::get(command).eval(lineNumber, info, state, program);
+    if(lineNumber >= 0) {
+      program.addSourceLine(lineNumber, line);
+    }
   }
 }
 

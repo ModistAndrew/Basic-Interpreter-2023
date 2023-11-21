@@ -33,6 +33,7 @@ class Statement {
   std::smatch args;
 
   Statement(const std::string &name, const std::smatch &args);
+
 public:
   void execute(EvalState &state, Program &program) const;
 };
@@ -44,6 +45,7 @@ class StatementType {
   std::regex pattern;
   int lineFlag; //-1 for no line, 1 for line, 0 for both
   static void run(const std::smatch &data, EvalState &state, Program &program) {}
+
   std::function<decltype(run)> runFunc;
 
   static std::unordered_map<std::string, StatementType> statementMap;
@@ -54,12 +56,18 @@ class StatementType {
   static const std::string ANY;
   static const std::string EQUAL;
   static const std::string COMPARATOR;
+  static const std::string THEN;
 
-  StatementType(int lineFlag, const std::string &name, const std::vector<std::string> &patterns,
-                const std::function<decltype(run)> &runFunc);
+  static void add(const std::string &name, const std::vector<std::string> &patterns,
+                  const std::function<decltype(run)> &runFunc, int lineFlag);
+
+  StatementType(const std::string &name, const std::vector<std::string> &patterns,
+                const std::function<decltype(run)> &runFunc, int lineFlag);
 
 public:
   static void init();
+
+  static const StatementType &get(const std::string &name);
 
   void eval(int lineNumber, const std::string &info, EvalState &state, Program &program) const;
 };
