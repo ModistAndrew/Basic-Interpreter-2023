@@ -24,6 +24,7 @@ void processLine(const std::string &line, Program &program, EvalState &state);
 int main() {
   EvalState state;
   Program program;
+  StatementType::init();
   while (true) {
     try {
       std::string input;

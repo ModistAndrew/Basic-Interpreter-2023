@@ -51,12 +51,15 @@ class StatementType {
   static std::unordered_map<std::string, StatementType> statementMap;
   static const std::string VAR;
   static const std::string EXP;
+  static const std::string NUM;
+  static const std::string CMP;
   static const std::string SEPARATOR;
   static const std::string EMPTY;
   static const std::string ANY;
   static const std::string EQUAL;
-  static const std::string COMPARATOR;
   static const std::string THEN;
+
+  static const std::regex NUM_REGEX;
 
   static void add(const std::string &name, const std::vector<std::string> &patterns,
                   const std::function<decltype(run)> &runFunc, int lineFlag);

@@ -67,7 +67,7 @@ void Program::run(EvalState& state) { //currentLine still would be -1
   }
 }
 
-void Program::markModified() {
+void Program::setCurrentLine(int line) {
+  currentLine = line;
   lineModified = true;
 }
-

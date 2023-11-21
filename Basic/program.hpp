@@ -38,8 +38,8 @@ class Program {
   void nextLine();
 public:
   void run(EvalState &state);
-  void markModified();
-/*
+  void setCurrentLine(int line);
+  /*
  * Constructor: Program
  * Usage: Program program;
  * -----------------------
