@@ -40,7 +40,7 @@ void Program::print() {
   }
 }
 
-void Program::nextLine() {
+void Program::nextLine() { //make sure that currentLine is valid or = -1, find next valid or = -1
   if(parsedStatements.empty()) {
     currentLine = -1;
     return;
@@ -49,10 +49,7 @@ void Program::nextLine() {
     currentLine = parsedStatements.begin()->first;
     return;
   }
-  auto it = parsedStatements.find(currentLine);
-  if (it == parsedStatements.end()) {
-    error("LINE NUMBER ERROR");
-  }
+  auto it = parsedStatements.find(currentLine); //must find!
   it++;
   currentLine = (it == parsedStatements.end()) ? -1 : it->first;
 }
