@@ -54,7 +54,7 @@ class StatementType {
   static std::unordered_map<std::string, StatementType> statementMap;
   static const std::string VAR;
   static const std::string EXP;
-  static const std::string NUM;
+  static const std::string LINE;
   static const std::string CMP;
   static const std::string SEPARATOR;
   static const std::string EMPTY;

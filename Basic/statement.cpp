@@ -26,7 +26,7 @@ Statement::Statement(const std::string &name, const std::smatch &matches) {
 std::unordered_map<std::string, StatementType> StatementType::statementMap;
 const std::string StatementType::VAR = "([A-Za-z0-9]+)"; //captured
 const std::string StatementType::EXP = "([\\+\\-\\*\\/ ()A-Za-z0-9]+)"; //captured
-const std::string StatementType::NUM = "(-?[0-9]+)"; //captured
+const std::string StatementType::LINE = "([0-9]+)"; //captured
 const std::string StatementType::CMP = "([<=>])"; //captured
 const std::string StatementType::EQUAL = "(=)"; //captured
 const std::string StatementType::THEN = "(THEN)"; //captured
@@ -109,10 +109,10 @@ void StatementType::init() {
   add("END", {}, [](const std::vector<std::string> &data, EvalState &state, Program &program) {
     program.setCurrentLine(-1);
   }, 1);
-  add("GOTO", {NUM}, [](const std::vector<std::string> &data, EvalState &state, Program &program) {
+  add("GOTO", {LINE}, [](const std::vector<std::string> &data, EvalState &state, Program &program) {
     program.setCurrentLine(std::stoi(data[1]));
   }, 1);
-  add("IF", {EXP, CMP, EXP, THEN, NUM}, [](const std::vector<std::string> &data, EvalState &state, Program &program) {
+  add("IF", {EXP, CMP, EXP, THEN, LINE}, [](const std::vector<std::string> &data, EvalState &state, Program &program) {
     int lhs = parseExp(data[1], state);
     int rhs = parseExp(data[3], state);
     char c = data[2][0];
